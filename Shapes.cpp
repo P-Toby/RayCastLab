@@ -10,6 +10,10 @@ PPlane::PPlane(Vec normal, float _d, Color color)
 
 void PPlane::test(Ray& ray, HitData& hit) 
 {
+	///A(x - x1) + B(y - y1) + C(z - z1) = 0
+	///0(x - 0) + 	0(y - 0	) + (-1)(z - 1000) = 0
+	//Plane eq: - z + 1000 = 0
+	
 	
 }
 
