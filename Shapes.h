@@ -116,6 +116,18 @@ public:
 	PPlane(Vec normal, float _d, Color color); //Constructor
 };
 
+class PSphere : public Shape
+{
+private:
+	Vec center;
+	float radius;
+	float radius2;
+public:
+	void test(Ray& ray, HitData& hit);
+	Vec normal(Vec &point);
+	PSphere(Vec _center, float _radius, Color _color);
+};
+
 
 //--------------------------------------------------------------------
 // Classes that came with the project
