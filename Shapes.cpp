@@ -95,7 +95,7 @@ void PSphere::test(Ray& ray, HitData& hit)
 		}
 	}
 }
-//vvvvvvv NOT DONE vvvvvvv
+//vvvvvvv NOT SURE IF WORKING JUST YET (Need to implement lighting) vvvvvvv
 Vec PSphere::normal(Vec& point)
 {
 	//Find vector from center to point on surface and normalize it
@@ -106,11 +106,29 @@ Vec PSphere::normal(Vec& point)
 }
 //---------------------------------------------------------------------
 
+//---------------------------------------------------------------------
+//PTriangle functions
+//---------------------------------------------------------------------
+PTriangle::PTriangle(Vec _p1, Vec _p2, Vec _p3, Color _color)
+{
+
+}
+
+void PTriangle::test(Ray& ray, HitData& hit)
+{
+
+}
+
+Vec PTriangle::normal(Vec& point)
+{
+	///TODO: Calculate normal
+	return nor;
+}
+//---------------------------------------------------------------------
 
 //Used by all classes. TODO: Add actual shading
 Color Shape::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
-	
 	//For now we just return the color, no shading
 	return c;
 }

@@ -128,6 +128,17 @@ public:
 	PSphere(Vec _center, float _radius, Color _color);
 };
 
+class PTriangle : public Shape
+{
+private:
+	Vec p1, p2, p3, nor;
+	Vec edge0, edge1;
+
+public:
+	void test(Ray& ray, HitData& hit);
+	Vec normal(Vec &point);
+	PTriangle(Vec _p1, Vec _p2, Vec _p3, Color _color);
+};
 
 //--------------------------------------------------------------------
 // Classes that came with the project
