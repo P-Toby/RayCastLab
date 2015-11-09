@@ -28,7 +28,8 @@ void buildScene()
 	if (shapes.size() == 0)
 	{
 		// a plane facing the camera, passing through point (0,0,1000)
-		shapes.push_back(dynamic_cast<Shape*>(new MPlane(Vec(0, 0, -1), -1000, Color(0, 30, 30))));
+		//shapes.push_back(dynamic_cast<Shape*>(new MPlane(Vec(0, 0, -1), -1000, Color(0, 30, 30))));
+		shapes.push_back(dynamic_cast<Shape*>(new PPlane(Vec(0, 0, -1), 1000, Color(0, 30, 30))));
 
 		// a sphere at (400,400,300), with radius 200
 		shapes.push_back(dynamic_cast<Shape*>(new MSphere(Vec(400, 400, 300), 200, Color(100, 100, 0))));
