@@ -1,5 +1,8 @@
 #include "Shapes.h"
 
+//---------------------------------------------------------------------
+//PPlane functions
+//---------------------------------------------------------------------
 PPlane::PPlane(Vec normal, float _d, Color color)
 {
 	//Constructor
@@ -40,8 +43,10 @@ Vec PPlane::normal(Vec &point)
 	//For a plane the normal is the same regardless of intersection point
 	return n;
 }
+//---------------------------------------------------------------------
 
-//Used by all classes
+
+//Used by all classes. TODO: Add actual shading
 Color Shape::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
 	//For now we just return the color, no shading
