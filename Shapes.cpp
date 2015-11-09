@@ -10,30 +10,28 @@ PPlane::PPlane(Vec normal, float _d, Color color)
 
 void PPlane::test(Ray& ray, HitData& hit) 
 {
-	///A(x - x1) + B(y - y1) + C(z - z1) = 0
-	///0(x - 0) + 	0(y - 0	) + (-1)(z - 1000) = 0
-	///Plane eq: - z + 1000 = 0
-	
+	//Calculate the t value
 	float temp = (-d - (n.Dot(ray.o)));
 	float tempDivisor = n.Dot(ray.d);
 	float t;
 
+	//Make sure we do not divide by 0
 	if (tempDivisor != 0)
 	{
-		t = temp / tempDivisor;
+		t = temp / tempDivisor; //Calculate the t value
 
-		if (hit.t == -1 && t > 0)
+		if (hit.t == -1 && t > 0) //Initial value stored in hit.t if t is larger than 0
 		{
 			hit.t = t;
 			hit.lastShape = this;
 		}
-		else if (t < hit.t && t > 0)
+		else if (t < hit.t && t > 0) //t stored if smaller than hit.t and greater than zero.
 		{
 			hit.t = t;
 			hit.lastShape = this;
 		}
 	}
-
+	//If neither if statment runs then there was no hit and the resulting color is black.
 	
 }
 
@@ -43,7 +41,8 @@ Vec PPlane::normal(Vec &point)
 	return n;
 }
 
-Color PPlane::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
+//Used by all classes
+Color Shape::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
 	//For now we just return the color, no shading
 	return c;

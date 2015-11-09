@@ -112,7 +112,6 @@ private:
 public:
 	void test(Ray& ray, HitData& hit); //Hit test
 	Vec normal(Vec &point); //Returns the normal
-	virtual Color shade(Vec& light, const Vec& cam, Ray& r, HitData& h);
 
 	PPlane(Vec normal, float _d, Color color); //Constructor
 };
