@@ -43,6 +43,11 @@ Vec PPlane::normal(Vec &point)
 	//For a plane the normal is the same regardless of intersection point
 	return n;
 }
+
+Color PPlane::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
+{
+	return c;
+}
 //---------------------------------------------------------------------
 
 //---------------------------------------------------------------------
@@ -104,6 +109,11 @@ Vec PSphere::normal(Vec& point)
 
 	return a;
 }
+
+Color PSphere::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
+{
+	return c;
+}
 //---------------------------------------------------------------------
 
 //---------------------------------------------------------------------
@@ -124,11 +134,9 @@ Vec PTriangle::normal(Vec& point)
 	///TODO: Calculate normal
 	return nor;
 }
-//---------------------------------------------------------------------
 
-//Used by all classes. TODO: Add actual shading
-Color Shape::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
+Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
-	//For now we just return the color, no shading
 	return c;
 }
+//---------------------------------------------------------------------

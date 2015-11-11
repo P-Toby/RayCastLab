@@ -112,6 +112,7 @@ private:
 public:
 	void test(Ray& ray, HitData& hit); //Hit test
 	Vec normal(Vec &point); //Returns the normal
+	Color shade(Vec& light, const Vec& cam, Ray& r, HitData& h);
 
 	PPlane(Vec normal, float _d, Color color); //Constructor
 };
@@ -125,6 +126,8 @@ private:
 public:
 	void test(Ray& ray, HitData& hit);
 	Vec normal(Vec &point);
+	Color shade(Vec& light, const Vec& cam, Ray& r, HitData& h);
+
 	PSphere(Vec _center, float _radius, Color _color);
 };
 
@@ -137,6 +140,8 @@ private:
 public:
 	void test(Ray& ray, HitData& hit);
 	Vec normal(Vec &point);
+	Color shade(Vec& light, const Vec& cam, Ray& r, HitData& h);
+
 	PTriangle(Vec _p1, Vec _p2, Vec _p3, Color _color);
 };
 
