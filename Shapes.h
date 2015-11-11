@@ -78,6 +78,9 @@ struct Color
 	}
 };
 
+///My own crossproduct method
+Vec cross(Vec A, Vec B);
+
 class Shape;
 struct HitData
 {

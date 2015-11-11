@@ -121,17 +121,31 @@ Color PSphere::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 //---------------------------------------------------------------------
 PTriangle::PTriangle(Vec _p1, Vec _p2, Vec _p3, Color _color)
 {
+	p1 = _p1;
+	p2 = _p2;
+	p3 = _p3;
+	c = _color;
 
+	//Create the two edges
+	edge0 = p2 - p1;
+	edge1 = p3 - p1;
 }
 
 void PTriangle::test(Ray& ray, HitData& hit)
 {
+	///u and v, barycentric coordinates
+	///w = (1 - u - v)
+	///r(t) = f(u, v)
+	///o + td = (1 - u - v)p1 + up2 + vp3
+
+	Vec q = cross(ray.d, edge1);
 
 }
 
 Vec PTriangle::normal(Vec& point)
 {
-	///TODO: Calculate normal
+	///TODO: Calculate normal with cross product
+	
 	return nor;
 }
 
@@ -140,3 +154,15 @@ Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 	return c;
 }
 //---------------------------------------------------------------------
+
+//Cross product
+Vec cross(Vec A, Vec B)
+{
+
+	float x = (A.y * B.z) - (A.z * B.y);
+	float y = (A.z * B.x) - (A.x * B.z);
+	float z = (A.x * B.y) - (A.y * B.x);
+
+	Vec result(x, y, z);
+	return result;
+}
