@@ -137,27 +137,29 @@ void PTriangle::test(Ray& ray, HitData& hit)
 	///w = (1 - u - v)
 	///r(t) = f(u, v)
 	///o + td = (1 - u - v)p1 + up2 + vp3
-	float t = 0;
+	float epsilon = 0.000001f;
+	float t = 0.0f;
 
 	Vec q = cross(ray.d, edge1);
 	float a = edge0.Dot(q);
 
-	if (a != 0)
+	if (!(a > -epsilon && a < epsilon))
 	{
 		float f = 1 / a;
 		Vec s = ray.o - p1;
 		float u = f * (s.Dot(q));
-		if (u > 0)
+		if (!(u < 0.0f))
 		{
 			Vec r = cross(s, edge0);
 			float v = f * (ray.d.Dot(r));
 
-			if (!(v < 0 || u + v > 1.0f))
+			if (!(v < 0.0f || u + v > 1.0f))
 			{
 				t = f * (edge1.Dot(r));
 			}
 		}
 	}
+
 	
 	if (hit.t == -1 && t > 0) //Initial value stored in hit.t if t is larger than 0
 	{
@@ -169,7 +171,7 @@ void PTriangle::test(Ray& ray, HitData& hit)
 		hit.t = t;
 		hit.lastShape = this;
 	}
-
+	
 }
 
 Vec PTriangle::normal(Vec& point)
