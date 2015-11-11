@@ -27,11 +27,15 @@ void PPlane::test(Ray& ray, HitData& hit)
 		{
 			hit.t = t;
 			hit.lastShape = this;
+			hit.color = c;
+
 		}
 		else if (t < hit.t && t > 0) //t stored if smaller than hit.t and greater than zero.
 		{
 			hit.t = t;
 			hit.lastShape = this;
+			hit.color = c;
+
 		}
 	}
 	//If neither if statment runs then there was no hit and the resulting color is black.
@@ -88,6 +92,8 @@ void PSphere::test(Ray& ray, HitData& hit)
 		if (pow(b, 2) - w > 0) //Only store shape if b^2 - w is greater than zero
 		{
 			hit.lastShape = this;
+			hit.color = c;
+
 		}
 	}
 	else if (min_t < hit.t && min_t > 0)
@@ -97,6 +103,8 @@ void PSphere::test(Ray& ray, HitData& hit)
 		if (pow(b, 2) - w > 0)
 		{
 			hit.lastShape = this;
+			hit.color = c;
+
 		}
 	}
 }
@@ -143,6 +151,27 @@ void PTriangle::test(Ray& ray, HitData& hit)
 	Vec q = cross(ray.d, edge1);
 	float a = edge0.Dot(q);
 
+	
+	if (a > -epsilon && a < epsilon)
+		return;
+
+	float f = 1 / a;
+	Vec s = ray.o - p1;
+	float u = f * (s.Dot(q));
+
+	if (u < 0.0f)
+		return;
+
+	Vec r = cross(s, edge0);
+	float v = f * (ray.d.Dot(r));
+
+	if (v < 0.0f || u + v > 1.0f)
+		return;
+
+	t = f * (edge1.Dot(r));
+	
+	
+	/*
 	if (!(a > -epsilon && a < epsilon))
 	{
 		float f = 1 / a;
@@ -159,17 +188,19 @@ void PTriangle::test(Ray& ray, HitData& hit)
 			}
 		}
 	}
-
+	*/
 	
 	if (hit.t == -1 && t > 0) //Initial value stored in hit.t if t is larger than 0
 	{
 		hit.t = t;
 		hit.lastShape = this;
+		hit.color = c;
 	}
 	else if (t < hit.t && t > 0) //t stored if smaller than hit.t and greater than zero.
 	{
 		hit.t = t;
 		hit.lastShape = this;
+		hit.color = c;
 	}
 	
 }
