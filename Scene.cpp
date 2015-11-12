@@ -46,10 +46,10 @@ void buildScene()
 
 
 		float size = 20;
-		Vec p0{ -1, 0, 0 }; Vec p1{ 1, 0, 0 }; Vec p2{ 0,2*size,0 };
+		Vec p0{ -1, 0, 0 }; Vec p1{ 1, 0, 0 }; Vec p2{ 0,2*size, 0 };
 		for (unsigned int i = 1; i <= 20; i++)
 		{
-			Vec off { size*2 * i, 700.0, 0.0 };
+			Vec off { size*2 * i, 700.0, 15 };
 			p0.x = cosf(TORAD(i * (90/20.0f))) * size; p0.z = -sinf(TORAD(i * (90/20.0f))) * size;
 			p1.x = -p0.x; p1.z = -p0.z;
 			//shapes.push_back(dynamic_cast<Shape*>(new MTriangle(p0 + off, p1 + off, p2 + off, { 255,255,0 })));
