@@ -226,12 +226,77 @@ POBB::POBB(Vec b, float Hu, float Hv, float Hw, Color _color)
 
 void POBB::test(Ray& ray, HitData& hit)
 {
-	
+	///NOT FUNCTIONAL
+
+	float epsilon = 0.00001;
+	float tmin = -INFINITY;
+	float tmax = INFINITY;
+	Vec p = Bcenter - ray.o;
+
+	int hcounter = -1;
+	float harr[3] = {halfBu, halfBv, halfBw};
+
+	for (Vec i : {Bu, Bv, Bw})
+	{
+		float t1, t2;
+
+		hcounter++;
+
+		float e = i.Dot(p);
+		float f = i.Dot(ray.d);
+		if (abs(f) > epsilon)
+		{
+			t1 = (e + harr[hcounter]) / f;
+			t2 = (e + harr[hcounter]) / f;
+
+			if (t1 > t2)
+			{
+				float temp = t1;
+				t1 = t2;
+				t2 = temp;
+			}
+
+			if (t1 > tmin) { tmin = t1; }
+			if (t2 < tmax) { tmax = t2; }
+
+			if (tmin > tmax)
+				return;
+			if (tmax < 0)
+				return;
+		}
+		else if (-e - harr[hcounter] > 0 || -e + harr[hcounter] < 0)
+			return;
+	}
+
+	if (tmin > 0)
+	{
+		if (hit.t == -1 && tmin > 0 || tmin < hit.t && tmin > 0) //Initial value stored in hit.t if t is larger than 0
+		{
+			hit.t = tmin;
+			hit.lastShape = this;
+			hit.color = c;
+			hit.lastNormal = normal(ray.o + ray.d*tmin); //Save normal
+		}
+
+	}
+	else
+	{
+		if (hit.t == -1 && tmax > 0 || tmax < hit.t && tmax > 0) //Initial value stored in hit.t if t is larger than 0
+		{
+			hit.t = tmax;
+			hit.lastShape = this;
+			hit.color = c;
+			hit.lastNormal = normal(ray.o + ray.d*tmax); //Save normal
+		}
+
+		
+	}
 }
 
 Vec POBB::normal(Vec& point)
 {
-	Vec result;
+	///TODO NORMAL
+	Vec result(0,0,0);
 
 	return result;
 }
