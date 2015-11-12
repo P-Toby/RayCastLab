@@ -199,10 +199,48 @@ Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 //POBB functions
 //---------------------------------------------------------------------
 
+POBB::POBB(Vec b, Vec b1, Vec b2, Vec b3, float Hu, float Hv, float Hw, Color _color)
+{
+	Bcenter = b;
+	Bu = b1;
+	Bv = b2;
+	Bw = b3;
 
+	halfBu = Hu;
+	halfBv = Hv;
+	halfBw = Hw;
 
+	c = _color;
+}
+
+POBB::POBB(Vec b, float Hu, float Hv, float Hw, Color _color)
+{
+	Bcenter = b;
+
+	halfBu = Hu;
+	halfBv = Hv;
+	halfBw = Hw;
+	
+	c = _color;
+}
+
+void POBB::test(Ray& ray, HitData& hit)
+{
+	
+}
+
+Vec POBB::normal(Vec& point)
+{
+	Vec result;
+
+	return result;
+}
+
+Color POBB::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
+{
+	return c;
+}
 //---------------------------------------------------------------------
-
 
 //Cross product
 Vec cross(Vec A, Vec B)

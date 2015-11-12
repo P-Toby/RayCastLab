@@ -150,6 +150,7 @@ public:
 
 class POBB : public Shape
 {
+private:
 	Vec Bcenter;
 	Vec Bu;
 	Vec Bv;
@@ -163,13 +164,16 @@ class POBB : public Shape
 	float halfBv;
 	float halfBw;
 
+	// Center point, lenght U vector, length V vector, length W vector, color
+
+public:
 	void test(Ray& ray, HitData& hit);
 	Vec normal(Vec& point);
 
-	// Center point, lenght U vector, length V vector, length W vector, color
-
 	POBB(Vec b, Vec b1, Vec b2, Vec b3, float Hu, float Hv, float Hw, Color _color);
 	POBB(Vec b, float Hu, float Hv, float Hw, Color _color);
+
+	Color shade(Vec& light, const Vec& cam, Ray& r, HitData& h);
 };
 
 //--------------------------------------------------------------------
