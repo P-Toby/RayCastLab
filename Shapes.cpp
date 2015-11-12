@@ -23,19 +23,12 @@ void PPlane::test(Ray& ray, HitData& hit)
 	{
 		t = temp / tempDivisor; //Calculate the t value
 
-		if (hit.t == -1 && t > 0) //Initial value stored in hit.t if t is larger than 0
+		if (hit.t == -1 && t > 0 || t < hit.t && t > 0) //Initial value stored in hit.t if t is larger than 0
 		{
 			hit.t = t;
 			hit.lastShape = this;
 			hit.color = c;
-
-		}
-		else if (t < hit.t && t > 0) //t stored if smaller than hit.t and greater than zero.
-		{
-			hit.t = t;
-			hit.lastShape = this;
-			hit.color = c;
-
+			hit.lastNormal = normal(ray.o + ray.d*t); //Save normal
 		}
 	}
 	//If neither if statment runs then there was no hit and the resulting color is black.
@@ -85,7 +78,7 @@ void PSphere::test(Ray& ray, HitData& hit)
 	}
 
 	//Determine if hit
-	if (hit.t == -1 && min_t > 0)
+	if (hit.t == -1 && min_t > 0 || min_t < hit.t && min_t > 0)
 	{
 		hit.t = min_t;
 
@@ -93,28 +86,18 @@ void PSphere::test(Ray& ray, HitData& hit)
 		{
 			hit.lastShape = this;
 			hit.color = c;
-
-		}
-	}
-	else if (min_t < hit.t && min_t > 0)
-	{
-		hit.t = min_t;
-
-		if (pow(b, 2) - w > 0)
-		{
-			hit.lastShape = this;
-			hit.color = c;
-
+			hit.lastNormal = normal(ray.o + ray.d*min_t); //Save normal
 		}
 	}
 }
+
 //vvvvvvv NOT SURE IF WORKING JUST YET (Need to implement lighting) vvvvvvv
 Vec PSphere::normal(Vec& point)
 {
 	//Find vector from center to point on surface and normalize it
 	Vec a  = point - center;
 	a.Normalize();
-
+	
 	return a;
 }
 
@@ -190,24 +173,18 @@ void PTriangle::test(Ray& ray, HitData& hit)
 	}
 	*/
 	
-	if (hit.t == -1 && t > 0) //Initial value stored in hit.t if t is larger than 0
+	if (hit.t == -1 && t > 0 || t < hit.t && t > 0) //Initial value stored in hit.t if t is larger than 0
 	{
 		hit.t = t;
 		hit.lastShape = this;
 		hit.color = c;
+		hit.lastNormal = normal(ray.o + ray.d*t); //Save normal
 	}
-	else if (t < hit.t && t > 0) //t stored if smaller than hit.t and greater than zero.
-	{
-		hit.t = t;
-		hit.lastShape = this;
-		hit.color = c;
-	}
-	
 }
 
 Vec PTriangle::normal(Vec& point)
 {
-	///TODO: Calculate normal with cross product
+	//Calculate normal with cross product
 	nor = cross(edge0, edge1);
 	return nor;
 }
@@ -217,6 +194,15 @@ Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 	return c;
 }
 //---------------------------------------------------------------------
+
+//---------------------------------------------------------------------
+//POBB functions
+//---------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------
+
 
 //Cross product
 Vec cross(Vec A, Vec B)
