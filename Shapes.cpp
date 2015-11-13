@@ -228,12 +228,12 @@ void POBB::test(Ray& ray, HitData& hit)
 {
 	///NOT FUNCTIONAL
 
-	float epsilon = 0.00001;
+	float epsilon = 0.000001;
 	float tmin = -INFINITY;
 	float tmax = INFINITY;
 	Vec p = Bcenter - ray.o;
 
-	int hcounter = -1;
+	int hcounter = -1; //Dumb way of doing things but it (supposedly) works
 	float harr[3] = {halfBu, halfBv, halfBw};
 
 	for (Vec i : {Bu, Bv, Bw})
@@ -247,14 +247,9 @@ void POBB::test(Ray& ray, HitData& hit)
 		if (abs(f) > epsilon)
 		{
 			t1 = (e + harr[hcounter]) / f;
-			t2 = (e + harr[hcounter]) / f;
+			t2 = (e - harr[hcounter]) / f;
 
-			if (t1 > t2)
-			{
-				float temp = t1;
-				t1 = t2;
-				t2 = temp;
-			}
+			if (t1 > t2) { std::swap(t1, t2); }
 
 			if (t1 > tmin) { tmin = t1; }
 			if (t2 < tmax) { tmax = t2; }
@@ -277,7 +272,6 @@ void POBB::test(Ray& ray, HitData& hit)
 			hit.color = c;
 			hit.lastNormal = normal(ray.o + ray.d*tmin); //Save normal
 		}
-
 	}
 	else
 	{
@@ -288,15 +282,13 @@ void POBB::test(Ray& ray, HitData& hit)
 			hit.color = c;
 			hit.lastNormal = normal(ray.o + ray.d*tmax); //Save normal
 		}
-
-		
 	}
 }
 
 Vec POBB::normal(Vec& point)
 {
 	///TODO NORMAL
-	Vec result(0,0,0);
+	Vec result(0,0,1);
 
 	return result;
 }
@@ -305,6 +297,7 @@ Color POBB::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
 	return c;
 }
+
 //---------------------------------------------------------------------
 
 //Cross product
