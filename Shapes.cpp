@@ -43,7 +43,32 @@ Vec PPlane::normal(Vec &point)
 
 Color PPlane::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
-	return c;
+	Vec intersectionPoint = r.o + r.d*h.t;
+	Vec n = normal(intersectionPoint);
+	Vec lightDir = (light - intersectionPoint);
+	lightDir.Normalize();
+	float angle = n.Dot(lightDir);
+
+	Color dLight = { 255, 255, 255 };
+	Color ambLight = { 50, 50, 50 };
+
+	float rgb[3];
+
+	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
+	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
+	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+
+	for (float &i : rgb) //Make sure colors don't fall out of range and become "too bright"
+	{
+		if (i > 255.0f)
+		{
+			i = 255.0f;
+		}
+	}
+
+	Color result(rgb[0], rgb[1], rgb[2]);
+
+	return result;
 }
 //---------------------------------------------------------------------
 
@@ -64,8 +89,16 @@ void PSphere::test(Ray& ray, HitData& hit)
 	float t[2];
 	float b = ray.d.Dot(ray.o - center);
 	float w = ((ray.o - center).Dot(ray.o - center)) - pow(radius, 2);
-	t[0] = -b + sqrt(pow(b, 2) - w);
-	t[1] = -b - sqrt(pow(b, 2) - w);
+
+	if (pow(b, 2) - w > 0) //Make sure we have no imaginary roots
+	{
+		t[0] = -b + sqrt(pow(b, 2) - w);
+		t[1] = -b - sqrt(pow(b, 2) - w);
+	}
+	else
+	{
+		return;
+	}
 	
 	//Find which t is the smallest value
 	if (t[0] < t[1])
@@ -81,13 +114,9 @@ void PSphere::test(Ray& ray, HitData& hit)
 	if (hit.t == -1 && min_t > 0 || min_t < hit.t && min_t > 0)
 	{
 		hit.t = min_t;
-
-		if (pow(b, 2) - w > 0) //Only store shape if b^2 - w is greater than zero
-		{
-			hit.lastShape = this;
-			hit.color = c;
-			hit.lastNormal = normal(ray.o + ray.d*min_t); //Save normal
-		}
+		hit.lastShape = this;
+		hit.color = c;
+		hit.lastNormal = normal(ray.o + ray.d*min_t); //Save normal
 	}
 }
 
@@ -103,7 +132,32 @@ Vec PSphere::normal(Vec& point)
 
 Color PSphere::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
-	return c;
+	Vec intersectionPoint = r.o + r.d*h.t;
+	Vec n = normal(intersectionPoint);
+	Vec lightDir = (light - intersectionPoint);
+	lightDir.Normalize();
+	float angle = n.Dot(lightDir);
+
+	Color dLight = { 255, 255, 255 };
+	Color ambLight = { 50, 50, 50 };
+
+	float rgb[3];
+
+	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
+	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
+	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+
+	for (float &i : rgb) //Make sure colors don't fall out of range and become "too bright"
+	{
+		if (i > 255.0f)
+		{
+			i = 255.0f;
+		}
+	}
+
+	Color result(rgb[0], rgb[1], rgb[2]);
+
+	return result;
 }
 //---------------------------------------------------------------------
 
@@ -186,12 +240,40 @@ Vec PTriangle::normal(Vec& point)
 {
 	//Calculate normal with cross product
 	nor = cross(edge0, edge1);
+	nor.Normalize();
 	return nor;
 }
 
 Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
-	return c;
+	
+	Vec intersectionPoint = r.o + r.d*h.t;
+	Vec n = normal(intersectionPoint);
+	Vec lightDir = (light - intersectionPoint);
+	lightDir.Normalize();
+	float angle = n.Dot(lightDir);
+
+	Color dLight = { 255, 255, 255 };
+	Color ambLight = { 50, 50, 50 };
+
+	float rgb[3];
+
+	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
+	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
+	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+
+	for (float &i : rgb)
+	{
+		if (i > 255.0f)
+		{
+			i = 255.0f;
+		}
+	}
+
+	Color result(rgb[0], rgb[1], rgb[2]);
+
+	return result;
+	
 }
 //---------------------------------------------------------------------
 
@@ -226,7 +308,6 @@ POBB::POBB(Vec b, float Hu, float Hv, float Hw, Color _color)
 
 void POBB::test(Ray& ray, HitData& hit)
 {
-	///NOT FUNCTIONAL
 
 	float epsilon = 0.000001;
 	float tmin = -INFINITY;
@@ -295,7 +376,32 @@ Vec POBB::normal(Vec& point)
 
 Color POBB::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 {
-	return c;
+	Vec intersectionPoint = r.o + r.d*h.t;
+	Vec n = normal(intersectionPoint);
+	Vec lightDir = (light - intersectionPoint);
+	lightDir.Normalize();
+	float angle = n.Dot(lightDir);
+
+	Color dLight = { 255, 255, 255 };
+	Color ambLight = { 50, 50, 50 };
+
+	float rgb[3];
+
+	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
+	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
+	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+
+	for (float &i : rgb) //Make sure colors don't fall out of range and become "too bright"
+	{
+		if (i > 255.0f)
+		{
+			i = 255.0f;
+		}
+	}
+
+	Color result(rgb[0], rgb[1], rgb[2]);
+
+	return result;
 }
 
 //---------------------------------------------------------------------
@@ -310,3 +416,4 @@ Vec cross(Vec A, Vec B)
 	Vec result(x, y, z);
 	return result;
 }
+
