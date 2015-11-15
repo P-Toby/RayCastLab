@@ -120,7 +120,6 @@ void PSphere::test(Ray& ray, HitData& hit)
 	}
 }
 
-//vvvvvvv NOT SURE IF WORKING JUST YET (Need to implement lighting) vvvvvvv
 Vec PSphere::normal(Vec& point)
 {
 	//Find vector from center to point on surface and normalize it
@@ -142,7 +141,7 @@ Color PSphere::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 	Color ambLight = { 50, 50, 50 };
 
 	float rgb[3];
-
+	
 	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
 	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
 	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
@@ -155,9 +154,7 @@ Color PSphere::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 		}
 	}
 
-	Color result(rgb[0], rgb[1], rgb[2]);
-
-	return result;
+	return Color (rgb[0], rgb[1], rgb[2]);
 }
 //---------------------------------------------------------------------
 
@@ -258,10 +255,12 @@ Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 
 	float rgb[3];
 
+	//Calculate the strenght of each color channel
 	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
 	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
 	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
 
+	//Prevent color values from going over 255
 	for (float &i : rgb)
 	{
 		if (i > 255.0f)
@@ -270,6 +269,7 @@ Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 		}
 	}
 
+	//Assemble the final color and return it
 	Color result(rgb[0], rgb[1], rgb[2]);
 
 	return result;
