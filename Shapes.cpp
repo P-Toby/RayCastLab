@@ -185,7 +185,6 @@ void PTriangle::test(Ray& ray, HitData& hit)
 	Vec q = cross(ray.d, edge1);
 	float a = edge0.Dot(q);
 
-	
 	if (a > -epsilon && a < epsilon)
 		return;
 
@@ -348,8 +347,6 @@ void POBB::test(Ray& ray, HitData& hit)
 
 Vec POBB::normal(Vec& point)
 {
-	///TODO NORMAL
-
 	Vec baseArr[6] = {Bu, Bv, Bw, Bu*-1.0f, Bv*-1.0f, Bw*-1.0f};
 	float halfArr[3] = { halfBu, halfBv, halfBw};
 	int halfArrC = 0;
@@ -368,6 +365,7 @@ Vec POBB::normal(Vec& point)
 			result = i;
 		}
 
+		///Reset counter
 		if (halfArrC < 2)
 			halfArrC++;
 		else
