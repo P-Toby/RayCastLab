@@ -204,26 +204,6 @@ void PTriangle::test(Ray& ray, HitData& hit)
 
 	t = f * (edge1.Dot(r));
 	
-	
-	/*
-	if (!(a > -epsilon && a < epsilon))
-	{
-		float f = 1 / a;
-		Vec s = ray.o - p1;
-		float u = f * (s.Dot(q));
-		if (!(u < 0.0f))
-		{
-			Vec r = cross(s, edge0);
-			float v = f * (ray.d.Dot(r));
-
-			if (!(v < 0.0f || u + v > 1.0f))
-			{
-				t = f * (edge1.Dot(r));
-			}
-		}
-	}
-	*/
-	
 	if (hit.t == -1 && t > 0 || t < hit.t && t > 0) //Initial value stored in hit.t if t is larger than 0
 	{
 		hit.t = t;
@@ -369,7 +349,30 @@ void POBB::test(Ray& ray, HitData& hit)
 Vec POBB::normal(Vec& point)
 {
 	///TODO NORMAL
-	Vec result(0,0,1);
+
+	Vec baseArr[6] = {Bu, Bv, Bw, Bu*-1.0f, Bv*-1.0f, Bw*-1.0f};
+	float halfArr[3] = { halfBu, halfBv, halfBw};
+	int halfArrC = 0;
+
+	Vec result = { 0, 0, 0 };
+
+	for (Vec &i : baseArr)
+	{
+
+		Vec s = Bcenter + (i*halfArr[halfArrC]);
+		
+		float HmS_N_dot = (point - s).Dot(i);
+
+		if (abs(HmS_N_dot) < 0.001f)
+		{
+			result = i;
+		}
+
+		if (halfArrC < 2)
+			halfArrC++;
+		else
+			halfArrC = 0;
+	}
 
 	return result;
 }
