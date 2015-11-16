@@ -54,9 +54,12 @@ Color PPlane::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 
 	float rgb[3];
 
+	if (angle < 0.0f)
+		angle = 0.0f;
+
 	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
 	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
-	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+	rgb[2] = ((dLight.b / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
 
 	for (float &i : rgb) //Make sure colors don't fall out of range and become "too bright"
 	{
@@ -141,10 +144,13 @@ Color PSphere::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 	Color ambLight = { 50, 50, 50 };
 
 	float rgb[3];
-	
+
+	if (angle < 0.0f)
+		angle = 0.0f;
+
 	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
 	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
-	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+	rgb[2] = ((dLight.b / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
 
 	for (float &i : rgb) //Make sure colors don't fall out of range and become "too bright"
 	{
@@ -154,7 +160,9 @@ Color PSphere::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 		}
 	}
 
-	return Color (rgb[0], rgb[1], rgb[2]);
+	Color result(rgb[0], rgb[1], rgb[2]);
+
+	return result;
 }
 //---------------------------------------------------------------------
 
@@ -234,13 +242,14 @@ Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 
 	float rgb[3];
 
-	//Calculate the strenght of each color channel
+	if (angle < 0.0f)
+		angle = 0.0f;
+
 	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
 	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
-	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+	rgb[2] = ((dLight.b / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
 
-	//Prevent color values from going over 255
-	for (float &i : rgb)
+	for (float &i : rgb) //Make sure colors don't fall out of range and become "too bright"
 	{
 		if (i > 255.0f)
 		{
@@ -248,7 +257,6 @@ Color PTriangle::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 		}
 	}
 
-	//Assemble the final color and return it
 	Color result(rgb[0], rgb[1], rgb[2]);
 
 	return result;
@@ -388,9 +396,12 @@ Color POBB::shade(Vec& light, const Vec& cam, Ray& r, HitData& h)
 
 	float rgb[3];
 
+	if (angle < 0.0f) //Make sure angle is clamped to zero if negative, in order to remove diffuse light
+		angle = 0.0f;
+
 	rgb[0] = ((dLight.r / 255.0f) * (h.lastShape->c.r / 255.0f) * angle + (ambLight.r / 255.0f) * (h.lastShape->c.r / 255.0f)) * 255.0f; //red
 	rgb[1] = ((dLight.g / 255.0f) * (h.lastShape->c.g / 255.0f) * angle + (ambLight.g / 255.0f) * (h.lastShape->c.g / 255.0f)) * 255.0f; //green
-	rgb[2] = ((dLight.r / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
+	rgb[2] = ((dLight.b / 255.0f) * (h.lastShape->c.b / 255.0f) * angle + (ambLight.b / 255.0f) * (h.lastShape->c.b / 255.0f)) * 255.0f; //blue
 
 	for (float &i : rgb) //Make sure colors don't fall out of range and become "too bright"
 	{
